@@ -1,4 +1,5 @@
 from pip._internal import main as pip
+import magic
 import json
 from datetime import date
 from pprint import pprint
@@ -30,14 +31,12 @@ def Question():
 def Answers():
     return ["Roma", "Parigi", "Berlino"]
 
-def Magic(q): return q.replace("Qual è la ","").replace("dell'","")
-
 
 ##Prendi la domanda, somehow
 question = Question()
 
 ##Togli le robe inutili, lascia i sostantivi e kwords
-question_strip = Magic(question)
+question_strip = magic.Magic(question)
 
 ##Prendi le risposte
 answers = Answers()
@@ -61,7 +60,7 @@ for ans in answers:
 
 
 ##Se il set è di dimensione 1, vuol dire che ha trovato solo una risposta
-if len(correct_ans)==1
+if len(correct_ans)==1:
     right = list(correct_ans)[0]
 else:
     right = "BAD"
