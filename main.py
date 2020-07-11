@@ -15,8 +15,8 @@ import wikipedia
 
 ##Costanti + setting di wikipedia
 wikipedia.set_lang('it')
-API_key = "AIzaSyBbmlLp4Yxrx_2sE3ebdx9mCt1fL1YrRS4"
-CSE_id = "017297845227077967885:8bnf4eoxf-4"
+API_key = ""
+CSE_id = ""
 
 
 def search(search_term, **kwargs):
