@@ -1,0 +1,4 @@
+telethon
+googletrans
+pillow
+pytesseract
