@@ -1,16 +1,23 @@
 from time import sleep
 import json
+import sys
+import subprocess
 
 try:
+
     from telethon import TelegramClient
     from googletrans import Translator
     from PIL import ImageGrab
     import pytesseract
-except ImportError:
-    with open('requirements.txt', 'r') as file:
-        for line in file:
-            pip(['install', line])
 
+except ImportError:
+
+    subprocess.check_call([sys.executable,
+                           '-m',
+                           "pip",
+                           "install",
+                           "-r",
+                           "requirements.txt"])
 
 
 with open("C:/Users/theow/Desktop/keys.json", 'r') as f:
@@ -20,7 +27,9 @@ with open("C:/Users/theow/Desktop/keys.json", 'r') as f:
     api_hash = data["api_hash"]
     f.close()
 
-questionSize = (0,200,1920,1080)
+
+questionSize = (360,552,650,620)
+answerSize1, answerSize2, answerSize3, answerSize4 = 390, 635, 610, 660
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 
 
@@ -31,18 +40,25 @@ translator = Translator()
 def trans(text):
     return translator.translate(text, dest='en').text
 
-def QMagic(img):
+
+def qmagic(img):
     img = img.crop(questionSize)
     q = pytesseract.image_to_string(img)
-    q = q.replace("can", "").replace("\n","")
+    q = q.replace("\n", " ")
     return q
 
-def AMagic(img, i):
-    pass
+
+def amagic(img, i):
+    img = img.crop(answerSize1, answerSize2 + 43*i, answerSize3, answerSize4 + 43*i)
+    a = pytesseract.image_to_string(img)
+    return a
+
 
 with client:
     sleep(3)
     screenshot = ImageGrab.grab()
-    question = QMagic(screenshot)
-    #answers = [AMagic(screenshot, i) for i in range(3)]
+    question = qmagic(screenshot)
+#    question = "Chi ha recentemente battuto il record di presenze in serie A?"
+#    answers = ["Gianluigi Buffon", "Fabio Quagliarella", "Giampaolo Pazzini"]
+#   answers = [aMagic(screenshot, i) for i in range(3)]
     client.loop.run_until_complete(client.send_message(group_id, question))
